@@ -13,7 +13,7 @@
 <svelte:element
   this={tag}
   class="{$$props.class || ''} inline-flex rounded-md p-4 text-2xl text-gray-400
-    hover:!text-current active:!text-current dark:text-gray-700"
+        hover:!text-current active:!text-current dark:text-gray-400 xl:dark:text-gray-700"
   role="button"
   tabindex="0"
   on:click={toggle}

@@ -28,10 +28,11 @@
     class="mb-36 flex h-full flex-col items-center justify-center text-gray-900 dark:text-gray-50"
   >
     <TextSlideUp
-      class="mb-8 text-center font-semibold {!active ? 'invisible' : ''}"
+      class="mb-8 text-center text-[clamp(2rem,calc(2rem+((1vw-0.2rem)*2)),4rem)] font-semibold
+            {!active ? 'invisible' : ''}"
       {active}
       text={slideText}
     />
-    <TextRollButton />
+    <TextRollButton class="text-[clamp(1.75rem,calc(1.75rem+((1vw-0.2rem)*6)),7.75rem)]" />
   </div>
 </main>

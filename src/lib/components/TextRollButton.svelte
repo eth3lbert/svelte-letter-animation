@@ -9,9 +9,9 @@
 <svelte:element
   this={tag}
   class="{$$props.class || ''} flex items-center justify-center rounded-full border border-solid
-        border-gray-200 px-[5vw] py-[2.5vw] text-center text-8xl uppercase
-        transition duration-300 hover:scale-[1.025] hover:border-gray-700
-        dark:border-gray-800 dark:hover:border-gray-50"
+        border-gray-200 p-[8vw] text-center text-8xl uppercase transition duration-300
+        hover:scale-[1.025] hover:border-gray-700 dark:border-gray-800 dark:hover:border-gray-50
+        md:px-[5vw] md:py-[2.5vw]"
   role="button"
   tabindex="0"
   on:mouseenter={async () => {
