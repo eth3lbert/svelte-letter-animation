@@ -12,14 +12,19 @@
   let delay = 45;
   let lastIdx = 0;
 
-  $: letters = Array.from(text).flatMap((s) => s.match(/\S+|\s/g) as string[]);
+  $: words = text
+    .split(' ')
+    .flatMap((s) => s.match(/\S+|\s/g) as string[])
+    .filter((s) => !!s);
 
   const identity = <T,>(v: T) => v;
   let letterLayers: Tweened<number>[][] = [];
   let layer1: Readable<number[]>, layer2: Readable<number[]>;
   let timers: (ReturnType<typeof setTimeout> | undefined)[] = [];
+  let offsets: number[] = [];
 
-  $: if (letters) {
+  $: if (words) {
+    const letters = Array.from(words.join(''));
     letterLayers = [
       letters.map(() => tweened(1, { duration, easing: quintOut })),
       letters.map(() => tweened(0, { duration, easing: quintOut }))
@@ -27,6 +32,12 @@
     layer1 = derived(letterLayers[0], identity);
     layer2 = derived(letterLayers[1], identity);
     timers = letters.map(() => undefined);
+    offsets = [''].concat(words).map(
+      (
+        (offset) => (s) =>
+          (offset += s.length)
+      )(0)
+    );
   }
 
   $: if (active !== isActive) {
@@ -70,27 +81,31 @@
 <!-- use scale to simulate rolling (rotateX(-90/90) -->
 <svelte:element this={tag} class="text-roll-wrapper relative flex">
   <span class="text-roll w-full">
-    {#each letters as letter, i}
-      {#if letter === '\n'}
+    {#each words as word, i}
+      {#if word === '\n'}
         <br />
-      {:else if letter === ' '}
-        &nbsp;
       {:else}
-        <span class="text-roll__letter is-1" style:--scale-letter={$layer1[i]}>
-          {letter}
+        <span class="text-roll__word">
+          {#each Array.from(word) as char, j}
+            <span class="text-roll__letter is-1" style:--scale-letter={$layer1[offsets[i] + j]}>
+              {#if i > 0 && j === 0}&nbsp{/if}{char}
+            </span>
+          {/each}
         </span>
       {/if}
     {/each}
   </span>
   <span class="text-roll absolute bottom-0 left-0 right-0 top-0">
-    {#each letters as letter, i}
-      {#if letter === '\n'}
+    {#each words as word, i}
+      {#if word === '\n'}
         <br />
-      {:else if letter === ' '}
-        &nbsp;
       {:else}
-        <span class="text-roll__letter is-2" style:--scale-letter={$layer2[i]}>
-          {letter}
+        <span class="text-roll__word">
+          {#each Array.from(word) as char, j}
+            <span class="text-roll__letter is-2" style:--scale-letter={$layer2[offsets[i] + j]}>
+              {#if i > 0 && j === 0}&nbsp{/if}{char}
+            </span>
+          {/each}
         </span>
       {/if}
     {/each}
@@ -99,6 +114,7 @@
 
 <style lang="postcss">
   .text-roll,
+  .text-roll__word,
   .text-roll__letter {
     @apply inline-block;
   }

@@ -1,7 +1,7 @@
 <script lang="ts">
   import TextRoll from './TextRoll.svelte';
 
-  export let text = 'start a project';
+  export let text = '';
   export let tag = 'div';
   let active = false;
 </script>

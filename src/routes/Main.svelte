@@ -6,6 +6,7 @@
 
   let active = false;
   let slideText = "let's talk today.\nwe start tomorrow.";
+  let rollText = 'start a project';
   let timer: ReturnType<typeof setTimeout> | undefined;
 
   onMount(async () => {
@@ -33,6 +34,9 @@
       {active}
       text={slideText}
     />
-    <TextRollButton class="text-[clamp(1.75rem,calc(1.75rem+((1vw-0.2rem)*6)),7.75rem)]" />
+    <TextRollButton
+      class="text-[clamp(1.75rem,calc(1.75rem+((1vw-0.2rem)*6)),7.75rem)]"
+      text={rollText}
+    />
   </div>
 </main>
