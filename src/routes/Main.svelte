@@ -2,24 +2,25 @@
   import TextRollButton from '$lib/components/TextRollButton.svelte';
   import TextSlideUp from '$lib/components/TextSlideUp.svelte';
   import appStore from '$lib/stores/app';
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
 
   let active = false;
   let slideText = "let's talk today.\nwe start tomorrow.";
   let timer: ReturnType<typeof setTimeout> | undefined;
 
-  onMount(() => {
-    active = true;
+  onMount(async () => {
+    await tick();
+    toggle();
   });
 
-  async function toggle() {
+  async function toggle(ms?: number) {
     active = false;
     clearTimeout(timer);
     timer = setTimeout(async () => {
       active = true;
-    }, 750);
+    }, ms);
   }
-  $: $appStore.theme && toggle();
+  $: $appStore.theme && toggle(750);
 </script>
 
 <main class="{$$props.class || ''} flex flex-col items-center justify-start px-6 py-3">
